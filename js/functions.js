@@ -4,8 +4,32 @@
 Возвращаем результат
 */
 
-const testLengthString = (string, lenghtMax) => string.length <= lenghtMax;
+const checkLengthString = (string, lenghtMax) => string.length <= lenghtMax;
 
-testLengthString('проверяемая строка', 20);
-testLengthString('проверяемая строка', 18);
-testLengthString('проверяемая строка', 10);
+checkLengthString('проверяемая строка', 20);
+checkLengthString('проверяемая строка', 18);
+checkLengthString('проверяемая строка', 10);
+
+/*
+Объявляем функцию с одним параметром — строкой.
+Создаем новую переменную с нормализованной строкой (без пробелов и одного регистра)
+Создаем новую пустую строку и сохранить её в ещё одну переменную.
+Создаем цикл for c счётчиком равным индексу последнего символа (он на 1 меньше длины строки),
+цикл останавливается при достижении начала строки (нулевого индекса),
+на каждой итерации счётчик уменьшается на 1.
+В теле цикла на каждой итерации получать очередной символ «нормализованной» строки.
+С помощью оператора += записать этот символ в новую строку.
+Сравнить новую строку (===) с «нормализованной».
+Вернуть результат этого сравнения.
+*/
+
+const checkPalindrome = (string) => {
+  const normalizedString = string.replaceAll(' ','').toLowerCase();
+  let newString = ' ';
+  for (let i = normalizedString.length - 1; i >= 0; i--) {
+    newString += normalizedString[i];
+  }
+  return newString === normalizedString;
+};
+
+checkPalindrome('Лёша на полке клопа нашёл ');
