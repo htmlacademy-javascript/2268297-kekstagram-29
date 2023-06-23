@@ -20,7 +20,7 @@ const DESCRIPTION = [
   'С милым рай и в шалаше',
   'Кайф',
   'Экстрим',
-]
+];
 const LIKES_MIN = 15;
 const LIKES_MAX = 200;
 const COMMENT_NUMBER_MAX = 30;
@@ -60,23 +60,34 @@ const getIdGenerator = () => {
   };
 };
 
+const generateCommentId = getIdGenerator();
+const generatePhotoId = getIdGenerator();
+
+const addMessage = () =>
+  Array.from({length: getRandomInteger(1, 2)}, () => getRandomArrayElement(COMMENT_PHRASE)).join(' ');
+
 //добавляет комментарий
 const addComment = () => ({
-  id: getIdGenerator(),
-  avatar:'img/avatar-${getRandomInteger(1, AVATAR_NUMBER)}.svg',
-  message: getRandomArrayElement(COMMENT_PHRASE),
+  id: generateCommentId(),
+  avatar: `img/avatar-${getRandomInteger(1, AVATAR_NUMBER)}.svg`,
+  message: addMessage(),
   name: getRandomArrayElement(NAMES),
 });
 //добавляет фотографию
-const addPhotoDescription = (index) => ({
-  id: getRandomInteger(index),
-  url: 'photos/${}.jpg',
-  description: getRandomArrayElement(DESCRIPTION),
-  likes: getRandomInteger(LIKES_MIN, LIKES_MAX),
-  comments: Array.from({length: getRandomInteger(0, COMMENT_NUMBER_MAX)}, addComment,)
-});
+const addPhoto = () => {
+  const id = generatePhotoId();
+  return {
+    id: id,
+    url: `photos/${id}.jpg`,
+    description: getRandomArrayElement(DESCRIPTION),
+    likes: getRandomInteger(LIKES_MIN, LIKES_MAX),
+    comments: Array.from({length: getRandomInteger(0, COMMENT_NUMBER_MAX)}, addComment,)
+  };
+};
 
 //создает массив обЪектов
-const getArrayPhotos = () => Array.from({length: PICTURE_NUMBER}, addPhotoDescription);
+function getArrayPhotos() {
+  return Array.from({ length: PICTURE_NUMBER }, addPhoto);
+}
 
 console.log(getArrayPhotos());
