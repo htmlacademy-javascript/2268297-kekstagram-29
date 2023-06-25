@@ -1,4 +1,4 @@
-import {getRandomArrayElement} from './util.js';
+import { getRandomArrayElement, getRandomInteger } from './util.js';
 const PICTURE_NUMBER = 25;
 const DESCRIPTION = [
   'Здорово  на природе',
@@ -70,4 +70,4 @@ function getArrayPhotos() {
   return Array.from({ length: PICTURE_NUMBER }, addPhoto);
 }
 
-export {getArrayPhotos};
+export { getArrayPhotos };

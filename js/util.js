@@ -8,4 +8,4 @@ const getRandomInteger = (a, b) => {
 //возвращает случайный элемент массива
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-export {getRandomArrayElement};
+export { getRandomArrayElement, getRandomInteger };

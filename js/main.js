@@ -1,1 +1,1 @@
-import {getArrayPhotos} from './data.js'
+import { getArrayPhotos } from './data.js';
