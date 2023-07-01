@@ -1,1 +1,3 @@
-import { getArrayPhotos } from './data.js';
+import { getPhotos } from './mocks/data.js';
+import { renderThumbnails } from './thumbnails.js';
+renderThumbnails(getPhotos());
