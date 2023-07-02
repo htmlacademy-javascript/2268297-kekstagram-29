@@ -66,8 +66,8 @@ const addPhoto = () => {
 };
 
 //создает массив обЪектов
-function getArrayPhotos() {
+function getPhotos() {
   return Array.from({ length: PICTURE_NUMBER }, addPhoto);
 }
 
-export { getArrayPhotos };
+export { getPhotos };
