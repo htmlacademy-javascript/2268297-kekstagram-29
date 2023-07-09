@@ -1,33 +1,39 @@
 import { isEscapeKey } from './util.js';
-import { renderThumbnails } from './thumbnails.js';
 
-const modalWindow = document.querySelector('.big_picture');
-const modalWindowOpenElement = document.querySelector('.pictures');
+const bigPicture = document.querySelector('.big_picture');
+const bodyElement = document.querySelector('body');
 const modalWindowCloseElement = document.querySelector('.big-picture__cancel');
+
+const closeModalWindow = () => {
+  bigPicture.classList.add('hidden');
+  bodyElement.classList.remove('modal-open');
+  document.removeEventListener('keydown', onModalWindowEscape);
+};
 
 const onModalWindowEscape = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeModalWindow();
   }
-}
+};
 
-function openModalWindow () {
-  modalWindow.classList.remove('hidden');
+
+const renderPictureInformation = ({url, likes, description}) => {
+  bigPicture.querySelector('.big-picture__img img').src = url;
+  bigPicture.querySelector('.big-picture__img img').alt = description;
+  bigPicture.querySelector('.likes-count').textContent = likes;
+  bigPicture.querySelector('.social__caption').textContent = description;
+};
+
+const openBigPicture = (data) => {
+  bigPicture.classList.remove('hidden');
   document.addEventListener('keydown', onModalWindowEscape);
   bodyElement.classList.add('modal-open');
+  renderPictureInformation(data);
 };
-
-function closeModalWindow () {
-  modalWindow.classList.add('hidden');
-  document.addEventListener('keydown', onModalWindowEscape);
-  bodyElement.classList.remove('modal-open');
-};
-
-modalWindowOpenElement.addEventListener('click', () => {
-  openModalWindow();
-});
 
 modalWindowCloseElement.addEventListener('click', () => {
   closeModalWindow();
 });
+
+export { openBigPicture };
