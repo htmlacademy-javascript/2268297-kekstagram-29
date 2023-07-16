@@ -14,11 +14,22 @@ const openEditorPicture = () => {
   document.addEventListener('keydown', onModalWindowEscape)
 };
 
+const pristine = new Pristine(form, {
+  classTo: 'img-upload__field-wrapper',
+  errorTextParent: 'img-upload__field-wrapper',
+});
+
+const validateHashtag = () => {};
+const validateHashtagCount = () => {};
+const validateHashtagName = () => {};
+pristine.addValidator(hashtagsField);
+
 const closeEditorPicture = () => {
   form.reset();
   overlay.classList.add('hidden');
   body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onModalWindowEscape)
+  document.removeEventListener('keydown', onModalWindowEscape);
+  pristine.reset();
 };
 
 const isFieldFocus = () => document.activeElement === hashtagsField || document.activeElement === commentsField;
@@ -29,7 +40,6 @@ function onModalWindowEscape(evt) {
     closeEditorPicture();
   }
 }
-
 
 cancelButton.addEventListener('click', () => {
   closeEditorPicture();
