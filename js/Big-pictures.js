@@ -10,26 +10,26 @@ const closeModalWindow = () => {
   document.removeEventListener('keydown', onModalWindowEscape);
 };
 
-const onModalWindowEscape = (evt) => {
+function onModalWindowEscape(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeModalWindow();
   }
-};
+}
 
-
-const renderPictureInformation = ({url, likes, description}) => {
-  bigPicture.querySelector('.big-picture__img img').src = url;
-  bigPicture.querySelector('.big-picture__img img').alt = description;
+const renderPictureInformation = ({ url, likes, description }) => {
+  const bigPictureImg = bigPicture.querySelector('.big-picture__img img');
+  bigPictureImg.src = url;
+  bigPictureImg.alt = description;
   bigPicture.querySelector('.likes-count').textContent = likes;
   bigPicture.querySelector('.social__caption').textContent = description;
 };
 
-const openBigPicture = (data) => {
+const openBigPicture = (dataPicture) => {
   bigPicture.classList.remove('hidden');
   document.addEventListener('keydown', onModalWindowEscape);
   bodyElement.classList.add('modal-open');
-  renderPictureInformation(data);
+  renderPictureInformation(dataPicture);
 };
 
 modalWindowCloseElement.addEventListener('click', () => {
