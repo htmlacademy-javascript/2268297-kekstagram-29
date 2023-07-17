@@ -1,6 +1,6 @@
 import { isEscapeKey } from './util.js';
 
-const bigPicture = document.querySelector('.big_picture');
+const bigPicture = document.querySelector('.big-picture');
 const bodyElement = document.querySelector('body');
 const modalWindowCloseElement = document.querySelector('.big-picture__cancel');
 

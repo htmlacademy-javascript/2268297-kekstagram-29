@@ -5,8 +5,9 @@ const overlay = document.querySelector('.img-upload__overlay');
 const body = document.querySelector('body');
 const pictureField = document.querySelector('.img-upload__input');
 const hashtagsField = document.querySelector('.text__hashtags');
-const commentsField = document.querySelector('.text__description')
+const commentsField = document.querySelector('.text__description');
 const cancelButton = document.querySelector('.img-upload__cancel');
+
 
 const openEditorPicture = () => {
   overlay.classList.remove('hidden');
@@ -19,10 +20,21 @@ const pristine = new Pristine(form, {
   errorTextParent: 'img-upload__field-wrapper',
 });
 
-const validateHashtag = () => {};
-const validateHashtagCount = () => {};
-const validateHashtagName = () => {};
-pristine.addValidator(hashtagsField);
+const MAX_HASHTAGS_COUNT = 5;
+const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1-19}$/i;
+const hashtags = hashtagsField.value.split(' ');
+const validateHashtag = () => hashtags.every((hashtag) => VALID_SYMBOLS.test(hashtag));
+const validateHashtagCount = () => hashtags.length <= MAX_HASHTAGS_COUNT;
+
+const validateUniqueHashtagName = () => {
+  const UpperCaseHashtag = hashtags.map((hashtag) => hashtag.toUpperCase());
+  return UpperCaseHashtag.length === new Set(UpperCaseHashtag).size;
+};
+
+pristine.addValidator(hashtagsField, validateHashtagCount, 'не больше 5');
+pristine.addValidator(hashtagsField, validateHashtag, 'Невалидный хэш-тэг');
+pristine.addValidator(hashtagsField, validateUniqueHashtagName, 'Повторяющийся хэш-тэг');
+
 
 const closeEditorPicture = () => {
   form.reset();
