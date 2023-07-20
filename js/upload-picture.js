@@ -1,5 +1,6 @@
 import { isEscapeKey } from './util.js';
-
+const MAX_HASHTAGS_COUNT = 5;
+const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1-19}$/i;
 const form = document.querySelector('.img-upload__form');
 const overlay = document.querySelector('.img-upload__overlay');
 const body = document.querySelector('body');
@@ -8,11 +9,10 @@ const hashtagsField = document.querySelector('.text__hashtags');
 const commentsField = document.querySelector('.text__description');
 const cancelButton = document.querySelector('.img-upload__cancel');
 
-
 const openEditorPicture = () => {
   overlay.classList.remove('hidden');
   body.classList.add('modal-open');
-  document.addEventListener('keydown', onModalWindowEscape)
+  document.addEventListener('keydown', onModalWindowEscape);
 };
 
 const pristine = new Pristine(form, {
@@ -20,8 +20,7 @@ const pristine = new Pristine(form, {
   errorTextParent: 'img-upload__field-wrapper',
 });
 
-const MAX_HASHTAGS_COUNT = 5;
-const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1-19}$/i;
+
 const hashtags = hashtagsField.value.split(' ');
 const validateHashtag = () => hashtags.every((hashtag) => VALID_SYMBOLS.test(hashtag));
 const validateHashtagCount = () => hashtags.length <= MAX_HASHTAGS_COUNT;
