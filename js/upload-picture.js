@@ -20,19 +20,18 @@ const pristine = new Pristine(form, {
   errorTextParent: 'img-upload__field-wrapper',
 });
 
+const editHashtag = (hasgtagString) => hasgtagString.trim().split().filter((hashtag) => Boolean(hashtag.length));
 
-const hashtags = hashtagsField.value.split(' ');
-const validateHashtag = () => hashtags.every((hashtag) => VALID_SYMBOLS.test(hashtag));
-const validateHashtagCount = () => hashtags.length <= MAX_HASHTAGS_COUNT;
-
-const validateUniqueHashtagName = () => {
-  const UpperCaseHashtag = hashtags.map((hashtag) => hashtag.toUpperCase());
+const validateHashtag = (value) => editHashtag(value).every((hashtag) => VALID_SYMBOLS.test(hashtag));
+const validateHashtagCount = (value) => editHashtag(value).length <= MAX_HASHTAGS_COUNT;
+const validateUniqueHashtagName = (value) => {
+  const UpperCaseHashtag = editHashtag(value).map((hashtag) => hashtag.toUpperCase());
   return UpperCaseHashtag.length === new Set(UpperCaseHashtag).size;
 };
 
-pristine.addValidator(hashtagsField, validateHashtagCount, 'не больше 5');
-pristine.addValidator(hashtagsField, validateHashtag, 'Невалидный хэш-тэг');
-pristine.addValidator(hashtagsField, validateUniqueHashtagName, 'Повторяющийся хэш-тэг');
+pristine.addValidator(hashtagsField, validateHashtagCount, 'не больше 5', 3);
+pristine.addValidator(hashtagsField, validateHashtag, 'Невалидный хэш-тэг', 2);
+pristine.addValidator(hashtagsField, validateUniqueHashtagName, 'Повторяющийся хэш-тэг', 1);
 
 
 const closeEditorPicture = () => {
@@ -59,5 +58,21 @@ cancelButton.addEventListener('click', () => {
 const uploadPicture = () => {
   pictureField.addEventListener('change', openEditorPicture);
 };
+
+const sliderElement = document.querySelector('.effect-level__slider');
+const valueEffectElement = document.querySelector('.effect-level__value');
+noUiSlider.create(sliderElement, {
+  range: {
+    min: 0,
+    max: 1,
+  },
+  start: 0,
+  step: 0.1,
+  connect: 'lower'
+});
+
+sliderElement.noUiSlider.on('update', () => {
+  valueEffectElement.value = sliderElement.noUiSlider.get();
+});
 
 export { uploadPicture };
