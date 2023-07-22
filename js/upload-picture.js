@@ -1,4 +1,6 @@
 import { isEscapeKey } from './util.js';
+import { resetScale, initScale } from './scale.js';
+
 const MAX_HASHTAGS_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1-19}$/i;
 const form = document.querySelector('.img-upload__form');
@@ -9,29 +11,30 @@ const hashtagsField = document.querySelector('.text__hashtags');
 const commentsField = document.querySelector('.text__description');
 const cancelButton = document.querySelector('.img-upload__cancel');
 
-const openEditorPicture = () => {
-  overlay.classList.remove('hidden');
-  body.classList.add('modal-open');
-  document.addEventListener('keydown', onModalWindowEscape);
-};
-
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
 });
 
-const editHashtag = (hasgtagString) => hasgtagString.trim().split().filter((hashtag) => Boolean(hashtag.length));
+const openEditorPicture = () => {
+  overlay.classList.remove('hidden');
+  body.classList.add('modal-open');
+  document.addEventListener('keydown', onModalWindowEscape);
+  initScale();
+};
 
-const validateHashtag = (value) => editHashtag(value).every((hashtag) => VALID_SYMBOLS.test(hashtag));
+const editHashtag = (hashtagString) => hashtagString.trim().split(' ').filter((hashtag) => Boolean(hashtag.length));
+
+const validateHashtag = (value) => editHashtag(value).every((hashtag) => (hashtag.match(VALID_SYMBOLS)));
 const validateHashtagCount = (value) => editHashtag(value).length <= MAX_HASHTAGS_COUNT;
 const validateUniqueHashtagName = (value) => {
   const UpperCaseHashtag = editHashtag(value).map((hashtag) => hashtag.toUpperCase());
   return UpperCaseHashtag.length === new Set(UpperCaseHashtag).size;
 };
 
-pristine.addValidator(hashtagsField, validateHashtagCount, 'не больше 5', 3);
-pristine.addValidator(hashtagsField, validateHashtag, 'Невалидный хэш-тэг', 2);
-pristine.addValidator(hashtagsField, validateUniqueHashtagName, 'Повторяющийся хэш-тэг', 1);
+pristine.addValidator(hashtagsField, validateHashtagCount, 'не больше 5', 3, true);
+pristine.addValidator(hashtagsField, validateHashtag, 'Невалидный хэш-тэг', 2, true);
+pristine.addValidator(hashtagsField, validateUniqueHashtagName, 'Повторяющийся хэш-тэг', 1, true);
 
 
 const closeEditorPicture = () => {
@@ -40,6 +43,7 @@ const closeEditorPicture = () => {
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onModalWindowEscape);
   pristine.reset();
+  resetScale();
 };
 
 const isFieldFocus = () => document.activeElement === hashtagsField || document.activeElement === commentsField;
