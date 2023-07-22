@@ -35,9 +35,9 @@ const onButtonLessClick = () => {
 
 const resetScale = () => scalePicture(DEFAULT_SCALE);
 
-const initScale = () => {
+const addButtonScaleHandler = () => {
   buttonMoreElement.addEventListener('click', onButtonMoreClick);
   buttonLessElement.addEventListener('click', onButtonLessClick);
 };
 
-export { resetScale, initScale };
+export { resetScale, addButtonScaleHandler };

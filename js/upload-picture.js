@@ -1,5 +1,6 @@
 import { isEscapeKey } from './util.js';
-import { resetScale, initScale } from './scale.js';
+import { resetScale, addButtonScaleHandler } from './scale.js';
+import { addSliderEffectHandler, hideSlider, resetEffect} from './slider-effects.js';
 
 const MAX_HASHTAGS_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1-19}$/i;
@@ -20,7 +21,9 @@ const openEditorPicture = () => {
   overlay.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onModalWindowEscape);
-  initScale();
+  addButtonScaleHandler();
+  addSliderEffectHandler();
+  hideSlider();
 };
 
 const editHashtag = (hashtagString) => hashtagString.trim().split(' ').filter((hashtag) => Boolean(hashtag.length));
@@ -44,6 +47,7 @@ const closeEditorPicture = () => {
   document.removeEventListener('keydown', onModalWindowEscape);
   pristine.reset();
   resetScale();
+  resetEffect();
 };
 
 const isFieldFocus = () => document.activeElement === hashtagsField || document.activeElement === commentsField;
@@ -62,21 +66,5 @@ cancelButton.addEventListener('click', () => {
 const uploadPicture = () => {
   pictureField.addEventListener('change', openEditorPicture);
 };
-
-const sliderElement = document.querySelector('.effect-level__slider');
-const valueEffectElement = document.querySelector('.effect-level__value');
-noUiSlider.create(sliderElement, {
-  range: {
-    min: 0,
-    max: 1,
-  },
-  start: 0,
-  step: 0.1,
-  connect: 'lower'
-});
-
-sliderElement.noUiSlider.on('update', () => {
-  valueEffectElement.value = sliderElement.noUiSlider.get();
-});
 
 export { uploadPicture };
