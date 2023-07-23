@@ -14,12 +14,12 @@ const errorMessage = {
 };
 
 const createLoader = (route, method, errorText, body = null) =>
-  fetch(`${DATA_URL}${route}`, method, body)
+  fetch(`${DATA_URL}${route}`,{ method, body })
     .then((response) => {
       if (response.ok) {
         return response.json();
       }
-      throw new Error(Ошибка `${response.status} ${response.statusText}`);
+      throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
     })
     .catch(() => {
       throw new Error(errorText);

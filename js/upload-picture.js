@@ -4,13 +4,14 @@ import { addSliderEffectHandler, hideSlider, resetEffect} from './slider-effects
 
 const MAX_HASHTAGS_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1-19}$/i;
-const form = document.querySelector('.img-upload__form');
-const overlay = document.querySelector('.img-upload__overlay');
 const body = document.querySelector('body');
-const pictureField = document.querySelector('.img-upload__input');
-const hashtagsField = document.querySelector('.text__hashtags');
-const commentsField = document.querySelector('.text__description');
-const cancelButton = document.querySelector('.img-upload__cancel');
+const form = document.querySelector('.img-upload__form');
+const overlay = form.querySelector('.img-upload__overlay');
+const pictureField = form.querySelector('.img-upload__input');
+const hashtagsField = form.querySelector('.text__hashtags');
+const commentsField = form.querySelector('.text__description');
+const cancelButton = form.querySelector('.img-upload__cancel');
+const submitButton = form.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -67,4 +68,26 @@ const uploadPicture = () => {
   pictureField.addEventListener('change', openEditorPicture);
 };
 
-export { uploadPicture };
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Идет загрузка';
+};
+
+const unBlockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+const setOnFormSubmit = (callback) => {
+  form.addEventListener('submit', async (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      await callback(new FormData(form));
+      unBlockSubmitButton();
+    }
+  });
+};
+
+export { setOnFormSubmit, uploadPicture, closeEditorPicture};
