@@ -3,7 +3,8 @@ import { resetScale, addButtonScaleHandler } from './scale.js';
 import { addSliderEffectHandler, hideSlider, resetEffect} from './slider-effects.js';
 
 const MAX_HASHTAGS_COUNT = 5;
-const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1-19}$/i;
+const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const body = document.querySelector('body');
 const form = document.querySelector('.img-upload__form');
 const overlay = form.querySelector('.img-upload__overlay');
@@ -12,6 +13,8 @@ const hashtagsField = form.querySelector('.text__hashtags');
 const commentsField = form.querySelector('.text__description');
 const cancelButton = form.querySelector('.img-upload__cancel');
 const submitButton = form.querySelector('.img-upload__submit');
+const picturePreview = document.querySelector('img-upload__preview img');
+const pictureEffectsPreview = document.querySelector('effects__preview');
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -64,9 +67,6 @@ cancelButton.addEventListener('click', () => {
   closeEditorPicture();
 });
 
-const uploadPicture = () => {
-  pictureField.addEventListener('change', openEditorPicture);
-};
 
 const blockSubmitButton = () => {
   submitButton.disabled = true;
@@ -77,6 +77,23 @@ const unBlockSubmitButton = () => {
   submitButton.disabled = false;
   submitButton.textContent = 'Опубликовать';
 };
+
+const showUploadPicture = () => {
+  const file = pictureField.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  if (matches) {
+    picturePreview.src = URL.createObjectURL(file);
+    pictureEffectsPreview.forEach((preview) => {
+      preview.style.backgroundImage = `url('${picturePreview.src}')`;
+    });
+  }
+};
+
+pictureField.addEventListener('change', () => {
+  openEditorPicture();
+  showUploadPicture();
+});
 
 const setOnFormSubmit = (callback) => {
   form.addEventListener('submit', async (evt) => {
@@ -90,4 +107,4 @@ const setOnFormSubmit = (callback) => {
   });
 };
 
-export { setOnFormSubmit, uploadPicture, closeEditorPicture};
+export { setOnFormSubmit, closeEditorPicture};
