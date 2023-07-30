@@ -1,14 +1,14 @@
 const DATA_URL = 'https://29.javascript.pages.academy/kekstagram';
-const routeData = {
+const RouteData = {
   GET_DATA: '/data',
   POST_DATA: '/',
 };
-const methodData = {
+const MethodData = {
   GET: 'GET',
   POST: 'POST',
 };
 
-const errorMessage = {
+const ErrorMessage = {
   GET_DATA: 'Не удалось загрузить данные. Обновите страницу',
   POST_DATA: 'Не удалось отпраить данныею Попробуйте еще раз',
 };
@@ -25,7 +25,7 @@ const createLoader = (route, method, errorText, body = null) =>
       throw new Error(errorText);
     });
 
-const getData = () => createLoader(routeData.GET_DATA, methodData.GET, errorMessage.GET_DATA);
-const postData = (body) => createLoader(routeData.POST_DATA, methodData.POST, errorMessage.POST_DATA, body);
+const getData = () => createLoader(RouteData.GET_DATA, MethodData.GET, ErrorMessage.GET_DATA);
+const postData = (body) => createLoader(RouteData.POST_DATA, MethodData.POST, ErrorMessage.POST_DATA, body);
 
 export { getData, postData };

@@ -62,7 +62,9 @@ const openBigPicture = (dataPicture) => {
   bigPicture.classList.remove('hidden');
   document.addEventListener('keydown', onModalWindowEscape);
   bodyElement.classList.add('modal-open');
-  commentsLoaderElement.addEventListener('click', renderComments);
+  commentsLoaderElement.addEventListener('click', () => {
+    renderComments(dataPicture.comments);
+  });
   renderPictureInformation(dataPicture);
   renderComments(dataPicture.comments);
 };
