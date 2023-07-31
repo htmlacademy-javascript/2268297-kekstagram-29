@@ -8,7 +8,7 @@ const showAlert = (message) => {
   alertContainer.style.top = '0';
   alertContainer.style.padding = '15px';
   alertContainer.style.fontSize = '30px';
-  alertContainer.style.textAlign = 'center';
+  alertContainer.style.textAlign = 'center';I
   alertContainer.style.background = 'red';
   alertContainer.textContent = message;
   document.body.append(alertContainer);
