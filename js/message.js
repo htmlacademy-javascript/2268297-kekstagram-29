@@ -2,7 +2,6 @@ import { isEscapeKey } from './util.js';
 const errorMessage = document.querySelector('#error').content.querySelector('.error');
 const successMessage = document.querySelector('#success').content.querySelector('.success');
 
-
 const onMessageEscape = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();

@@ -13,8 +13,8 @@ const hashtagsField = form.querySelector('.text__hashtags');
 const commentsField = form.querySelector('.text__description');
 const cancelButton = form.querySelector('.img-upload__cancel');
 const submitButton = form.querySelector('.img-upload__submit');
-const picturePreview = document.querySelector('img-upload__preview img');
-const pictureEffectsPreview = document.querySelector('effects__preview');
+const picturePreview = document.querySelector('.img-upload__preview img');
+const pictureEffectsPreview = document.querySelectorAll('.effects__preview');
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',

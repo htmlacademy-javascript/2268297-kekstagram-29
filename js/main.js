@@ -1,5 +1,5 @@
 import { getData, postData } from './api.js';
-import { renderThumbnails, clearThumbnails } from './thumbnails.js';
+import { renderThumbnails } from './thumbnails.js';
 import { renderGallery } from './gallery.js';
 import { setOnFormSubmit, closeEditorPicture } from './upload-picture.js';
 import { showAlert } from './alert.js';
