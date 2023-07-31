@@ -1,4 +1,4 @@
-import { clearThumbnails } from "./thumbnails.js";
+import { clearThumbnails } from './thumbnails.js';
 
 const COUNT_RANDOM_PICTURES = 10;
 const Filter = {

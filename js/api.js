@@ -3,6 +3,7 @@ const RouteData = {
   GET_DATA: '/data',
   POST_DATA: '/',
 };
+
 const MethodData = {
   GET: 'GET',
   POST: 'POST',
