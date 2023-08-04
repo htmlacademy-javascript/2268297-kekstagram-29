@@ -1,10 +1,9 @@
 import { getData, postData } from './api.js';
-import { renderThumbnails } from './thumbnails.js';
 import { renderGallery } from './gallery.js';
 import { setOnFormSubmit, closeEditorPicture } from './upload-picture.js';
 import { showAlert } from './alert.js';
 import { showSuccessMessage, showErrorMessage } from './message.js';
-import { renderFilteredPictures } from './filtration.js';
+import { renderFilteredPictures, getFilteredPictures } from './filtration.js';
 import { debounce } from './util.js';
 
 setOnFormSubmit(async (data) => {
@@ -19,10 +18,9 @@ setOnFormSubmit(async (data) => {
 
 try {
   const pictureData = await getData();
-  const debouncedRenderThumbnails = debounce(renderThumbnails);
-  renderThumbnails(pictureData);
-  renderGallery(pictureData);
-  renderFilteredPictures(pictureData, debouncedRenderThumbnails);
+  const debouncedRenderGallery = debounce(renderGallery);
+  renderFilteredPictures(pictureData, debouncedRenderGallery);
+  renderGallery(getFilteredPictures());
 } catch (error) {
   showAlert(error.message);
 }
