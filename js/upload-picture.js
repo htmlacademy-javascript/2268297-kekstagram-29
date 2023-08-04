@@ -6,23 +6,23 @@ const MAX_HASHTAGS_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const body = document.querySelector('body');
-const form = document.querySelector('.img-upload__form');
-const overlay = form.querySelector('.img-upload__overlay');
-const pictureField = form.querySelector('.img-upload__input');
-const hashtagsField = form.querySelector('.text__hashtags');
-const commentsField = form.querySelector('.text__description');
-const cancelButton = form.querySelector('.img-upload__cancel');
-const submitButton = form.querySelector('.img-upload__submit');
-const picturePreview = document.querySelector('.img-upload__preview img');
-const pictureEffectsPreview = document.querySelectorAll('.effects__preview');
+const formElement = document.querySelector('.img-upload__form');
+const overlayElement = formElement.querySelector('.img-upload__overlay');
+const pictureFieldElement = formElement.querySelector('.img-upload__input');
+const hashtagsFieldElement = formElement.querySelector('.text__hashtags');
+const commentsFieldElement = formElement.querySelector('.text__description');
+const cancelButtonElement = formElement.querySelector('.img-upload__cancel');
+const submitButtonElement = formElement.querySelector('.img-upload__submit');
+const picturePreviewElement = document.querySelector('.img-upload__preview img');
+const pictureEffectsPreviewElement = document.querySelectorAll('.effects__preview');
 
-const pristine = new Pristine(form, {
+const pristine = new Pristine(formElement, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
 });
 
 const openEditorPicture = () => {
-  overlay.classList.remove('hidden');
+  overlayElement.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onModalWindowEscape);
   addButtonScaleHandler();
@@ -39,14 +39,14 @@ const validateUniqueHashtagName = (value) => {
   return UpperCaseHashtag.length === new Set(UpperCaseHashtag).size;
 };
 
-pristine.addValidator(hashtagsField, validateHashtagCount, 'не больше 5', 3, true);
-pristine.addValidator(hashtagsField, validateHashtag, 'Невалидный хэш-тэг', 2, true);
-pristine.addValidator(hashtagsField, validateUniqueHashtagName, 'Повторяющийся хэш-тэг', 1, true);
+pristine.addValidator(hashtagsFieldElement, validateHashtagCount, 'не больше 5', 3, true);
+pristine.addValidator(hashtagsFieldElement, validateHashtag, 'Невалидный хэш-тэг', 2, true);
+pristine.addValidator(hashtagsFieldElement, validateUniqueHashtagName, 'Повторяющийся хэш-тэг', 1, true);
 
 
 const closeEditorPicture = () => {
-  form.reset();
-  overlay.classList.add('hidden');
+  formElement.reset();
+  overlayElement.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onModalWindowEscape);
   pristine.reset();
@@ -54,7 +54,7 @@ const closeEditorPicture = () => {
   resetEffect();
 };
 
-const isFieldFocus = () => document.activeElement === hashtagsField || document.activeElement === commentsField;
+const isFieldFocus = () => document.activeElement === hashtagsFieldElement || document.activeElement === commentsFieldElement;
 
 function onModalWindowEscape(evt) {
   if (isEscapeKey(evt) && !isFieldFocus()) {
@@ -63,48 +63,47 @@ function onModalWindowEscape(evt) {
   }
 }
 
-cancelButton.addEventListener('click', () => {
+cancelButtonElement.addEventListener('click', () => {
   closeEditorPicture();
 });
 
-
 const blockSubmitButton = () => {
-  submitButton.disabled = true;
-  submitButton.textContent = 'Идет загрузка';
+  submitButtonElement.disabled = true;
+  submitButtonElement.textContent = 'Идет загрузка';
 };
 
 const unBlockSubmitButton = () => {
-  submitButton.disabled = false;
-  submitButton.textContent = 'Опубликовать';
+  submitButtonElement.disabled = false;
+  submitButtonElement.textContent = 'Опубликовать';
 };
 
 const showUploadPicture = () => {
-  const file = pictureField.files[0];
+  const file = pictureFieldElement.files[0];
   const fileName = file.name.toLowerCase();
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
   if (matches) {
-    picturePreview.src = URL.createObjectURL(file);
-    pictureEffectsPreview.forEach((preview) => {
-      preview.style.backgroundImage = `url('${picturePreview.src}')`;
+    picturePreviewElement.src = URL.createObjectURL(file);
+    pictureEffectsPreviewElement.forEach((preview) => {
+      preview.style.backgroundImage = `url('${picturePreviewElement.src}')`;
     });
   }
 };
 
-pictureField.addEventListener('change', () => {
+pictureFieldElement.addEventListener('change', () => {
   openEditorPicture();
   showUploadPicture();
 });
 
 const setOnFormSubmit = (callback) => {
-  form.addEventListener('submit', async (evt) => {
+  formElement.addEventListener('submit', async (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
     if (isValid) {
       blockSubmitButton();
-      await callback(new FormData(form));
+      await callback(new FormData(formElement));
       unBlockSubmitButton();
     }
   });
 };
 
-export { setOnFormSubmit, closeEditorPicture};
+export { setOnFormSubmit, closeEditorPicture, onModalWindowEscape};

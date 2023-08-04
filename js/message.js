@@ -1,6 +1,7 @@
 import { isEscapeKey } from './util.js';
-const errorMessage = document.querySelector('#error').content.querySelector('.error');
-const successMessage = document.querySelector('#success').content.querySelector('.success');
+import { onModalWindowEscape } from './upload-picture.js';
+const errorMessageElement = document.querySelector('#error').content.querySelector('.error');
+const successMessageElement = document.querySelector('#success').content.querySelector('.success');
 
 const onMessageEscape = (evt) => {
   if (isEscapeKey(evt)) {
@@ -16,26 +17,35 @@ const onBodyClick = (evt) => {
   }
 };
 
+const onButtonClick = (evt) => {
+  if (evt.target === document.querySelector('.error__button, .success__button')) {
+    evt.preventDefault();
+    closeMessage();
+  }
+};
+
 function closeMessage () {
   const messageElement = document.querySelector('.error, .success');
   messageElement.remove();
-  document.addEventListener('keydown', onMessageEscape);
   document.removeEventListener('click', onBodyClick);
+  document.removeEventListener('keydown', onMessageEscape);
+  document.addEventListener('keydown', onModalWindowEscape);
 }
 
 const showMessage = (messageElement, closeButtonClass) => {
   document.body.append(messageElement);
   document.addEventListener('click', onBodyClick);
   document.addEventListener('keydown', onMessageEscape);
-  messageElement.querySelector(closeButtonClass).addEventListener('click', closeMessage);
+  messageElement.querySelector(closeButtonClass).addEventListener('click', onButtonClick);
 };
 
 const showSuccessMessage = () => {
-  showMessage(successMessage, '.success__button');
+  showMessage(successMessageElement, '.success__button');
 };
 
 const showErrorMessage = () => {
-  showMessage(errorMessage, '.error__button');
+  showMessage(errorMessageElement, '.error__button');
+  document.removeEventListener('keydown', onModalWindowEscape);
 };
 
 export { showSuccessMessage, showErrorMessage };
